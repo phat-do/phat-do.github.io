@@ -5,4 +5,4 @@ var audio = new Audio("./audio/1126_generated.wav")
 audio.play()
 </script> -->
 
- <source src="./audio/1126_generated.wav" autoplay />
+<audio ref='themeSong' src="./audio/1126_generated.wav" autoPlay loop></audio>
