@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html style="overflow: auto;">
+
+<head>
+  <meta charset="utf-8">
+  <title>Best Practices in Transfer Learning for Text-to-Speech in Low-Resource Languages: Frisian as a Case Study (mobile companion page)</title>
+  <meta name="generator" content="Google Web Designer 14.0.4.1108">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style type="text/css" id="gwd-text-style">
+    p {
+      margin: 0px;
+    }
+    h1 {
+      margin: 0px;
+    }
+    h2 {
+      margin: 0px;
+    }
+    h3 {
+      margin: 0px;
+    }
+  </style>
+  <style type="text/css">
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0px;
+    }
+    body {
+      background-color: transparent;
+      transform: perspective(1400px) matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+      transform-style: preserve-3d;
+      font-family: "Computer Modern Bright";
+    }
+    .header {
+      padding: 30px;
+      text-align: center;
+      background: rgb(0, 62, 116);
+      color: white;
+      font-size: 14px;
+    }
+    .text {
+      text-align: center;
+      color: black;
+      font-size: 16px;
+    }
+    .smalltext {
+      text-align: center;
+      color: black;
+      font-size: 13px;
+    }
+    audio {
+      width: 100px;
+      margin-left: 15px;
+    }
+    @font-face {
+      font-family: "Computer Modern Bright";
+      src: url("../assets/Bright/cmunbmr.eot?#iefix") format("embedded-opentype"), url("../assets/Bright/cmunbmr.woff") format("woff"), url("../assets/Bright/cmunbmr.ttf") format("truetype"), url("../assets/Bright/cmunbmr.svg#cmunbmr") format("svg");
+      font-weight: normal;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: "Computer Modern Bright";
+      src: url("../assets/Bright/cmunbbx.eot?#iefix") format("embedded-opentype"), url("../assets/Bright/cmunbbx.woff") format("woff"), url("../assets/Bright/cmunbbx.ttf") format("truetype"), url("../assets/Bright/cmunbbx.svg#cmunbbx") format("svg");
+      font-weight: bold;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: "Computer Modern Bright";
+      src: url("../assets/Bright/cmunbmo.eot?#iefix") format("embedded-opentype"), url("../assets/Bright/cmunbmo.woff") format("woff"), url("../assets/Bright/cmunbmo.ttf") format("truetype"), url("../assets/Bright/cmunbmo.svg#cmunbmo") format("svg");
+      font-weight: normal;
+      font-style: italic;
+    }
+    @font-face {
+      font-family: "Computer Modern Bright";
+      src: url("../assets/Bright/cmunbxo.eot?#iefix") format("embedded-opentype"), url("../assets/Bright/cmunbxo.woff") format("woff"), url("../assets/Bright/cmunbxo.ttf") format("truetype"), url("../assets/Bright/cmunbxo.svg#cmunbxo") format("svg");
+      font-weight: bold;
+      font-style: italic;
+    }
+  </style>
+</head>
+
+<body class="htmlNoPages">
+  <div class="header">
+    <h1>Best Practices in Transfer Learning<br>for Text-to-Speech in Low-Resource Languages:<br>Frisian as a Case Study</h1><br>
+    
+    <p><b>Phat Do</b><br>
+       Dutch Speech Tech Day,<br> February 20th 2023 </p>
+  </div><br>
+  
+  <div class="text">
+    <p><b>Welcome to the mobile companion page!</b></p><br>
+
+    <p>Here you can listen to some <b><span style="color: rgb(140, 22, 22);">Frisian speech</span></b><br>
+       from the experiment, synthesized from the<br> corresponding <b><span style="color: rgb(0, 62, 116);">source languages</span></b>!</p><br>
+
+    <p>You can find the publication of this experiment <a href="https://aclanthology.org/2022.sigul-1.3.pdf" target="_blank" style="color: rgb(218, 18, 26);"><b>HERE</b></a>,<br>
+      or try the full version of the companion page <a href="https://phat-do.github.io/sigul22/" target="_blank" style="color: rgb(218, 18, 26);"><b>HERE</b></a>.</p><br>
+  </div>
+  
+  <hr><br>
+  
+  <div class="text">
+    <p>These come from a model trained with only<br> <span style="color: rgb(0, 62, 116);"><b>30 minutes</b></span> of recordings, using 
+       transfer learning<br> from the corresponding source language models.<br> <br><b>How would you rate them?</b></p><br>
+    
+    <p><span style="color: rgb(140, 22, 22);"><b>Bûter, brea en griene tsiis, wa't dat <br>net sizze kin is gjin oprjochte Fries.</b></span></p><br>
+    
+    <table align="center" ;="" text-align:="" center="">
+      <tbody>
+        <tr>
+          <td><span>Dutch</span></td>
+          <td>
+            <img src="../assets/img/dutch.png" style="width: 50px; margin-left: 10px;">
+          </td>
+          <td>
+            <audio src="../audio/buter_nl.wav" controls=""></audio>
+          </td>
+        </tr>
+        <tr>
+          <td>Finnish</td>
+          <td>
+            <img src="../assets/img/finnish.png" style="width: 50px; margin-left: 10px;">
+          </td>
+          <td>
+            <audio src="../audio/buter_fi.wav" controls=""></audio>
+          </td>
+        </tr>
+        <tr>
+          <td>French</td>
+          <td>
+            <img src="../assets/img/french.png" style="width: 50px; margin-left: 10px;">
+          </td>
+          <td>
+            <audio src="../audio/buter_fr.wav" controls=""></audio>
+          </td>
+        </tr>
+        <tr>
+          <td>Japanese</td>
+          <td>
+            <img src="../assets/img/japanese.png" style="width: 50px; margin-left: 10px;">
+          </td>
+          <td>
+            <audio src="../audio/buter_ja.wav" controls=""></audio>
+          </td>
+        </tr>
+        <tr>
+          <td>Spanish</td>
+          <td>
+            <img src="../assets/img/spanish.png" style="width: 50px; margin-left: 10px;">
+          </td>
+          <td>
+            <audio src="../audio/buter_es.wav" controls=""></audio>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div><br>
+
+  <br>
+  <div class="text">
+
+    <p><b>Some of the utterances used in the experiment:</b></p><br>
+
+    <p><span style="color: rgb(140, 22, 22);"><b>Wylst ik út alle macht besocht om mysels<br> yn 'e stokken te hâlden, fûillearre er my oerflakkich.</b></span></p><br>
+    
+    <table align="center">
+      <tbody>
+        <tr>
+          <td><span>Dutch</span></td>
+          <td>
+            <img src="../assets/img/dutch.png" style="width: 50px; margin-left: 10px;">
+          </td>
+          <td>
+            <audio src="../audio/CSS10_nl_fy_mapped_1804.wav" controls=""></audio>
+          </td>
+        </tr>
+        <tr>
+          <td>Finnish</td>
+          <td>
+            <img src="../assets/img/finnish.png" style="width: 50px; margin-left: 10px;">
+          </td>
+          <td>
+            <audio src="../audio/CSS10_fi_fy_mapped_1804.wav" controls=""></audio>
+          </td>
+        </tr>
+        <tr>
+          <td>French</td>
+          <td>
+            <img src="../assets/img/french.png" style="width: 50px; margin-left: 10px;">
+          </td>
+          <td>
+            <audio src="../audio/CSS10_fr_FR_fy_mapped_1804.wav" controls=""></audio>
+          </td>
+        </tr>
+        <tr>
+          <td>Japanese</td>
+          <td>
+            <img src="../assets/img/japanese.png" style="width: 50px; margin-left: 10px;">
+          </td>
+          <td>
+            <audio src="../audio/CSS10_ja_fy_mapped_1804.wav" controls=""></audio>
+          </td>
+        </tr>
+        <tr>
+          <td>Spanish</td>
+          <td>
+            <img src="../assets/img/spanish.png" style="width: 50px; margin-left: 10px;">
+          </td>
+          <td>
+            <audio src="../audio/CSS10_es_ES_fy_mapped_1804.wav" controls=""></audio>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <br>
+    <p><span style="color: rgb(140, 22, 22);"><b>Mar dat is net hár fertsjinste,<br> as jo dat mar witte.<br> Mei de goeie man trouwe, sa hat se dat flikt.</b></span></p><br>
+    
+    <table align="center">
+      <tbody>
+        <tr>
+          <td><span>Dutch</span></td>
+          <td>
+            <img src="../assets/img/dutch.png" style="width: 50px; margin-left: 10px;">
+          </td>
+          <td>
+            <audio src="../audio/CSS10_nl_fy_mapped_575.wav" controls=""></audio>
+          </td>
+        </tr>
+        <tr>
+          <td>Finnish</td>
+          <td>
+            <img src="../assets/img/finnish.png" style="width: 50px; margin-left: 10px;">
+          </td>
+          <td>
+            <audio src="../audio/CSS10_fi_fy_mapped_575.wav" controls=""></audio>
+          </td>
+        </tr>
+        <tr>
+          <td>French</td>
+          <td>
+            <img src="../assets/img/french.png" style="width: 50px; margin-left: 10px;">
+          </td>
+          <td>
+            <audio src="../audio/CSS10_fr_FR_fy_mapped_575.wav" controls=""></audio>
+          </td>
+        </tr>
+        <tr>
+          <td>Japanese</td>
+          <td>
+            <img src="../assets/img/japanese.png" style="width: 50px; margin-left: 10px;">
+          </td>
+          <td>
+            <audio src="../audio/CSS10_ja_fy_mapped_575.wav" controls=""></audio>
+          </td>
+        </tr>
+        <tr>
+          <td>Spanish</td>
+          <td>
+            <img src="../assets/img/spanish.png" style="width: 50px; margin-left: 10px;">
+          </td>
+          <td>
+            <audio src="../audio/CSS10_es_ES_fy_mapped_575.wav" controls=""></audio>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <br>
+    <p><span style="color: rgb(140, 22, 22);"><b>Sa gau as it út it sicht rekke, twifele ik.</b></span></p><br>
+    
+    <table align="center">
+      <tbody>
+        <tr>
+          <td><span>Dutch</span></td>
+          <td>
+            <img src="../assets/img/dutch.png" style="width: 50px; margin-left: 10px;">
+          </td>
+          <td>
+            <audio src="../audio/CSS10_nl_fy_mapped_1785.wav" controls=""></audio>
+          </td>
+        </tr>
+        <tr>
+          <td>Finnish</td>
+          <td>
+            <img src="../assets/img/finnish.png" style="width: 50px; margin-left: 10px;">
+          </td>
+          <td>
+            <audio src="../audio/CSS10_fi_fy_mapped_1785.wav" controls=""></audio>
+          </td>
+        </tr>
+        <tr>
+          <td>French</td>
+          <td>
+            <img src="../assets/img/french.png" style="width: 50px; margin-left: 10px;">
+          </td>
+          <td>
+            <audio src="../audio/CSS10_fr_FR_fy_mapped_1785.wav" controls=""></audio>
+          </td>
+        </tr>
+        <tr>
+          <td>Japanese</td>
+          <td>
+            <img src="../assets/img/japanese.png" style="width: 50px; margin-left: 10px;">
+          </td>
+          <td>
+            <audio src="../audio/CSS10_ja_fy_mapped_1785.wav" controls=""></audio>
+          </td>
+        </tr>
+        <tr>
+          <td>Spanish</td>
+          <td>
+            <img src="../assets/img/spanish.png" style="width: 50px; margin-left: 10px;">
+          </td>
+          <td>
+            <audio src="../audio/CSS10_es_ES_fy_mapped_1785.wav" controls=""></audio>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <br>
+    <p><span style="color: rgb(140, 22, 22);"><b>It wie de toan dy't mear sei as de wurden sels, <br>want prate diene wy allegeduerigen.</b></span></p><br>
+    
+    <table align="center">
+      <tbody>
+        <tr>
+          <td><span>Dutch</span></td>
+          <td>
+            <img src="../assets/img/dutch.png" style="width: 50px; margin-left: 10px;">
+          </td>
+          <td>
+            <audio src="../audio/CSS10_nl_fy_mapped_615.wav" controls=""></audio>
+          </td>
+        </tr>
+        <tr>
+          <td>Finnish</td>
+          <td>
+            <img src="../assets/img/finnish.png" style="width: 50px; margin-left: 10px;">
+          </td>
+          <td>
+            <audio src="../audio/CSS10_fi_fy_mapped_615.wav" controls=""></audio>
+          </td>
+        </tr>
+        <tr>
+          <td>French</td>
+          <td>
+            <img src="../assets/img/french.png" style="width: 50px; margin-left: 10px;">
+          </td>
+          <td>
+            <audio src="../audio/CSS10_fr_FR_fy_mapped_615.wav" controls=""></audio>
+          </td>
+        </tr>
+        <tr>
+          <td>Japanese</td>
+          <td>
+            <img src="../assets/img/japanese.png" style="width: 50px; margin-left: 10px;">
+          </td>
+          <td>
+            <audio src="../audio/CSS10_ja_fy_mapped_615.wav" controls=""></audio>
+          </td>
+        </tr>
+        <tr>
+          <td>Spanish</td>
+          <td>
+            <img src="../assets/img/spanish.png" style="width: 50px; margin-left: 10px;">
+          </td>
+          <td>
+            <audio src="../audio/CSS10_es_ES_fy_mapped_615.wav" controls=""></audio>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div><br>
+  
+  <hr><br>
+  
+  <p class="text"><b>Sample utterances from the source models:</b></p><br>
+  
+  <div class="text">
+    <table align="center" display="table">
+      <tbody>
+        <tr>
+          <td><span><b>Dutch</b></span></td>
+          <td>
+            <img src="../assets/img/dutch.png" style="width: 50px; margin-left: 10px;">
+          </td>
+        </tr>
+      </tbody>
+    </table><br>
+    
+    <table align="center">
+      <tbody>
+        <tr>
+          <td style="text-align: center;"><span class="text">Iedereen was verwonderd dat hij geslaagd was in het rijexamen.</span></td>
+          <td>
+            <audio src="../audio/source/CSS10_nl_sent_2.wav" controls=""></audio>
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: center;"><span class="text">Waarom is ze gisteren <br>niet gekomen?</span></td>
+          <td>
+            <audio src="../audio/source/CSS10_nl_sent_17.wav" controls=""></audio>
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: center;"><span class="text">Als we hier stoppen, <br>moeten we helemaal <br>opnieuw van nul beginnen!</span></td>
+          <td>
+            <audio src="../audio/source/CSS10_nl_sent_20.wav" controls=""></audio>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div><br>
+  
+  <hr><br>
+  
+  <div class="text">
+    <table align="center">
+      <tbody>
+        <tr>
+          <td><span><b>Finnish</b></span></td>
+          <td>
+            <img src="../assets/img/finnish.png" style="width: 50px; margin-left: 10px;">
+          </td>
+        </tr>
+      </tbody>
+    </table><br>
+    
+    <table align="center">
+      <tbody>
+        <tr>
+          <td style="text-align: center;"><span class="text">On joitakin tärkeitä kysymyksiä, <br>joihin tiede ei osaa vastata.</span></td>
+          <td>
+            <audio src="../audio/source/CSS10_fi_sent_4.wav" controls=""></audio>
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: center;"><span class="text">Kuinka monta kirjaa olet tähän mennessä lukenut tänä kesänä?</span></td>
+          <td>
+            <audio src="../audio/source/CSS10_fi_sent_17.wav" controls=""></audio>
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: center;"><span class="text">Hyvää matkaa!</span></td>
+          <td>
+            <audio src="../audio/source/CSS10_fi_sent_6.wav" controls=""></audio>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div><br>
+  
+  <hr><br>
+  
+  <div class="text">
+    <table align="center">
+      <tbody>
+        <tr>
+          <td><span><b>French</b></span></td>
+          <td>
+            <img src="../assets/img/french.png" style="width: 50px; margin-left: 10px;">
+          </td>
+        </tr>
+      </tbody>
+    </table><br>
+    
+    <table align="center">
+      <tbody>
+        <tr>
+          <td style="text-align: center;"><span class="text">La machine à laver fut l'une <br>des plus grandes inventions <br>de tous les temps.</span></td>
+          <td>
+            <audio src="../audio/source/CSS10_fr_FR_test_10.wav" controls=""></audio>
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: center;"><span class="text">Voulez-vous apprendre <br>les sciences avec facilité?</span></td>
+          <td>
+            <audio src="../audio/source/CSS10_fr_FR_test_8.wav" controls=""></audio>
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: center;"><span class="text">Versez-moi encore un <br>peu de vin s'il vous plaît!</span></td>
+          <td>
+            <audio src="../audio/source/CSS10_fr_FR_test_11.wav" controls=""></audio>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div><br>
+  
+  <hr><br>
+  
+  <div class="text">
+    <table align="center">
+      <tbody>
+        <tr>
+          <td><span><b>Japanese</b></span></td>
+          <td>
+            <img src="../assets/img/japanese.png" style="width: 50px; margin-left: 10px;">
+          </td>
+        </tr>
+      </tbody>
+    </table><br>
+    
+    <table align="center">
+      <tbody>
+        <tr>
+          <td style="text-align: center;"><span class="text" lang="ja-jp">彼が話し終わるとみんな<br>黙っていた。</span></td>
+          <td>
+            <audio src="../audio/source/CSS10_ja_sent_15.wav" controls=""></audio>
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: center;"><span class="text" lang="ja-jp">質問の全てに答えなければ<br>なりませんか。</span></td>
+          <td>
+            <audio src="../audio/source/CSS10_ja_sent_13.wav" controls=""></audio>
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: center;"><span class="text" lang="ja-jp">１９００年に彼はイギリスを<br>去り、そのまま二度と<br>戻らなかった。</span></td>
+          <td>
+            <audio src="../audio/source/CSS10_ja_sent_4.wav" controls=""></audio>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div><br>
+  
+  <hr><br>
+  
+  <div class="text">
+    <table align="center">
+      <tbody>
+        <tr>
+          <td><span><b>Spanish</b></span></td>
+          <td>
+            <img src="../assets/img/spanish.png" style="width: 50px; margin-left: 10px;">
+          </td>
+        </tr>
+      </tbody>
+    </table><br>
+    
+    <table align="center">
+      <tbody>
+        <tr>
+          <td style="text-align: center;"><span class="text">Su técnica es excelente, pero ella necesita tocar con más expresión.</span></td>
+          <td>
+            <audio src="../audio/source/CSS10_es_ES_test_9.wav" controls=""></audio>
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: center;"><span class="text">¿Cuándo fue la última <br>vez que trazaste un plano?</span></td>
+          <td>
+            <audio src="../audio/source/CSS10_es_ES_test_5.wav" controls=""></audio>
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: center;"><span class="text">¡En mi mesa no!</span></td>
+          <td>
+            <audio src="../audio/source/CSS10_es_ES_test_1.wav" controls=""></audio>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div><br>
+  
+  <hr><br>
+  
+  <div class="text">
+    <p>Hope you found this interesting!<br> I'd love to get in touch:</p><br>
+    
+    <table align="center">
+      <tbody>
+        <tr>
+          <td style="padding-right: 10px;">
+            <a href="https://twitter.com/phatt_do" target="_blank">
+              <img src="../assets/img/twitter.png" style="height: 20px;">
+            </a>
+          </td>
+          <td style="padding-right: 10px;">
+            <a href="https://www.linkedin.com/in/phatdo/" target="_blank">
+              <img src="../assets/img/linkedin.svg" style="height: 20px;">
+            </a>
+          </td>
+          <td><a href="mailto: t.p.do@rug.nl">t.p.do@rug.nl</a></td>
+        </tr>
+        <tr>
+          <td colspan="3">
+            <a href="https://www.rug.nl/staff/t.p.do/research" target="_blank" style="color: rgb(218, 18, 26);"><b>T.P. (Phat) Do</b></a>
+          </td>
+        </tr>
+      </tbody>
+    </table><br>
+    
+        
+  </div>
+</body>
+
+</html>
