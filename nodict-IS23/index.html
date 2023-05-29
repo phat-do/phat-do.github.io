@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="generator" content="Google Web Designer 14.0.4.1108">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <title>Towards Text-to-Speech in Low-Resource Languages with No Pronunciation Dictionaries</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    // audio pause seeks to beginning
+    $(function() {
+      $("audio").on("pause", function() {
+        this.currentTime = 0;
+      });
+    });
+    // audio play stops any other playing audio
+    $(function() {
+      $("audio").on("play", function() {
+        $("audio").not(this).each(function(index, audio) {
+          audio.pause();
+          audio.currentTime = 0;
+        });
+      });
+    });
+  </script>
+  <style>
+    audio {
+      width: 100px;
+    }
+    td {
+      text-align: center;
+    }
+    td.transcript {
+      text-align: left;
+    }
+    .gwd-span-1n92 {
+      font-weight: normal;
+      font-size: 28px;
+    }
+    .gwd-span-qv7t {
+      font-size: 18px;
+    }
+    .gwd-strong-1gua {
+      font-size: 20px;
+    }
+    .gwd-span-1cxx {
+      font-style: italic;
+    }
+    .gwd-span-mea8 {
+      font-style: italic;
+    }
+    .gwd-span-mk6x {
+      font-style: italic;
+    }
+    .gwd-span-1akz {
+      color: red;
+    }
+    .gwd-span-1ufo {
+      font-size: 14px;
+    }
+  </style>
+</head>
+ 
+<body class="htmlNoPages">
+  <h1 class="">Towards Text-to-Speech in Low-Resource Languages with No Pronunciation Dictionaries</span></h1>
+  <p class="">
+    <span class="gwd-span-qv7t">Anonymous submission to INTERSPEECH 2023</span><br>
+    
+  <hr>
+  <p class="">
+    This is the (anonymous version of the) companion webpage for our paper "Towards Text-to-Speech in Low-Resource Languages with No Pronunciation Dictionaries", submitted to INTERSPEECH 2023.</p>
+  <p class="">Below we present some of the Frisian audio samples synthesized in our experiments. We used a large number of samples (700 samples in total: 100 randomly-selected utterances * 7 systems) for more statistical robustness, but for practical purposes, here we only present 140 (20 * 7) randomly-selected samples for reference. In the order of appearance in the paper's charts:
+  </p>
+  
+  </td>
+    <li><span class="gwd-span-1cxx">Resynthesized (resynth) </span>- Vocoded from ground-truth spectrogram (should be closest to the real recording)</li>
+    <li><span class="gwd-span-1cxx">Phoneme input - ground-truth dictionary (ph-gt) </span>- Sample from the TTS system with phone labels as input and with a real Frisian dictionary</li>
+    <li><span class="gwd-span-1cxx">Phoneme input - multilingual g2p (ph-g2p) </span>- Same as above, but used multilingual G2P for transcriptions</li>
+    <li><span class="gwd-span-1cxx">Phoneme input - phone recognition (ph-rec) </span>- Same as above, but used universal phone recognition to build a makeshift dictionary</li>
+    <li><span class="gwd-span-1cxx">Feature input - ground-truth dictionary (ft-gt) </span>- Sample from the TTS system with articulatory features as input and with a real Frisian dictionary</li>
+    <li><span class="gwd-span-1cxx">Feature input - multilingual g2p (ft-g2p) </span>- Same as above, but used multilingual G2P for transcriptions</li>
+    <li><span class="gwd-span-1cxx">Feature input - phone recognition (ft-rec) </span>- Same as above, but used universal phone recognition to build a makeshift dictionary</li>
+  </ul>
+  <br>
+  <table border="1">
+    <tbody>
+      <tr>
+        <td rowspan="2">#</td>
+        <td rowspan="2">Text</td>
+        <td rowspan="2">Resynthesized<br><span class="gwd-span-1cxx">resynth</span></td>
+        <td colspan="3">Phone labels input <span class="gwd-span-1cxx">(ph-)</span></td>
+        <td colspan="3">Articulatory features input <span class="gwd-span-1cxx">(ft-)</span></td>
+      </tr>
+      <tr>
+        <td><span class="gwd-span-1cxx">ph-gt</span></td>
+        <td><span class="gwd-span-1cxx">ph-g2p</span></td>
+        <td><span class="gwd-span-1cxx">ph-rec</span></td>
+        <td><span class="gwd-span-1cxx">ft-gt</span></td>
+        <td><span class="gwd-span-1cxx">ft-g2p</span></td>
+        <td><span class="gwd-span-1cxx">ft-rec</span></td>
+      </tr>
+
+      <tr>
+        <td>1</td>
+        <td class="transcript">Pas de oare deis wie it safier.</td>
+        <td>
+          <audio src="../audio/nodict-IS23/resynth/FY-02-2515.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-real/FY-02-2515.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-g2p/FY-02-2515.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-rec/FY-02-2515.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-real/FY-02-2515.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-g2p/FY-02-2515.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-rec/FY-02-2515.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>2</td>
+        <td class="transcript">Se hie it al tocht, se kin Lize gewoan priuwe.</td>
+        <td>
+          <audio src="../audio/nodict-IS23/resynth/FY-02-905.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-real/FY-02-905.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-g2p/FY-02-905.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-rec/FY-02-905.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-real/FY-02-905.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-g2p/FY-02-905.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-rec/FY-02-905.wav" controls=""></audio>
+        </td>
+      </tr>
+      
+      <tr>
+        <td>3</td>
+        <td class="transcript">De stêd doarde ik net mear yn. Stel je foar dat ik Aldert nochris tsjin it liif rinne soe. Wêr wenne er eins? Sels dat wist ik net.</td>
+        <td>
+          <audio src="../audio/nodict-IS23/resynth/FY-02-3037.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-real/FY-02-3037.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-g2p/FY-02-3037.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-rec/FY-02-3037.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-real/FY-02-3037.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-g2p/FY-02-3037.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-rec/FY-02-3037.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>4</td>
+        <td class="transcript">Ik woe wolris sjen wêr't dat kring wenne.</td>
+        <td>
+          <audio src="../audio/nodict-IS23/resynth/FY-02-573.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-real/FY-02-573.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-g2p/FY-02-573.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-rec/FY-02-573.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-real/FY-02-573.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-g2p/FY-02-573.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-rec/FY-02-573.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>5</td>
+        <td class="transcript">Mar der wie healwei de middei net in soad folk yn de saak, gjin kop taalde nei syn boeken.</td>
+        <td>
+          <audio src="../audio/nodict-IS23/resynth/FY-02-3287.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-real/FY-02-3287.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-g2p/FY-02-3287.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-rec/FY-02-3287.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-real/FY-02-3287.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-g2p/FY-02-3287.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-rec/FY-02-3287.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>6</td>
+        <td class="transcript">De kompetysje dan? bringt er úteinlik yn. Nee man. It slaan. Dát mis ik. Sláán.</td>
+        <td>
+          <audio src="../audio/nodict-IS23/resynth/FY-02-3326.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-real/FY-02-3326.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-g2p/FY-02-3326.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-rec/FY-02-3326.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-real/FY-02-3326.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-g2p/FY-02-3326.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-rec/FY-02-3326.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>7</td>
+        <td class="transcript">Dokter, sikehûs, hechtsje, it hiele pakket.</td>
+        <td>
+          <audio src="../audio/nodict-IS23/resynth/FY-02-456.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-real/FY-02-456.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-g2p/FY-02-456.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-rec/FY-02-456.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-real/FY-02-456.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-g2p/FY-02-456.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-rec/FY-02-456.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>8</td>
+        <td class="transcript">Wylst menear Kuperus oan syn didaktise kwaliteiten wurke troch út en troch in ekstra sigaret op te stekken, fermakken syn learlingen har yn Itaalje.</td>
+        <td>
+          <audio src="../audio/nodict-IS23/resynth/FY-02-2337.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-real/FY-02-2337.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-g2p/FY-02-2337.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-rec/FY-02-2337.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-real/FY-02-2337.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-g2p/FY-02-2337.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-rec/FY-02-2337.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>9</td>
+        <td class="transcript">In skoft wurdt der neat sein. Ien fan de hûnen blaft de stilte fuort, Bonita wrinzget.</td>
+        <td>
+          <audio src="../audio/nodict-IS23/resynth/FY-02-1726.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-real/FY-02-1726.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-g2p/FY-02-1726.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-rec/FY-02-1726.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-real/FY-02-1726.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-g2p/FY-02-1726.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-rec/FY-02-1726.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>10</td>
+        <td class="transcript">Bûten is it stil wurden. De beammen hawwe harren spegeling ferlern, de grêften bochtsje as tsjustere paden tusken de bebouwing troch.</td>
+        <td>
+          <audio src="../audio/nodict-IS23/resynth/FY-02-1338.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-real/FY-02-1338.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-g2p/FY-02-1338.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-rec/FY-02-1338.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-real/FY-02-1338.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-g2p/FY-02-1338.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-rec/FY-02-1338.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>11</td>
+        <td class="transcript">Fuortdaalks fielde ik my skuldich, want ík hie harren dizze reis kado dien.</td>
+        <td>
+          <audio src="../audio/nodict-IS23/resynth/FY-02-2069.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-real/FY-02-2069.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-g2p/FY-02-2069.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-rec/FY-02-2069.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-real/FY-02-2069.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-g2p/FY-02-2069.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-rec/FY-02-2069.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>12</td>
+        <td class="transcript">Sis dat wol. Dat rinnen fan dy, hoe sit dat, man?</td>
+        <td>
+          <audio src="../audio/nodict-IS23/resynth/FY-02-2876.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-real/FY-02-2876.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-g2p/FY-02-2876.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-rec/FY-02-2876.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-real/FY-02-2876.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-g2p/FY-02-2876.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-rec/FY-02-2876.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>13</td>
+        <td class="transcript">Wendy reagearret net.</td>
+        <td>
+          <audio src="../audio/nodict-IS23/resynth/FY-02-1529.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-real/FY-02-1529.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-g2p/FY-02-1529.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-rec/FY-02-1529.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-real/FY-02-1529.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-g2p/FY-02-1529.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-rec/FY-02-1529.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>14</td>
+        <td class="transcript">It is in eangst dy'tst earder field hast. Wér tinkst werom oan de rivier, oan de fiskersboat fan dyn heit.</td>
+        <td>
+          <audio src="../audio/nodict-IS23/resynth/FY-02-2678.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-real/FY-02-2678.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-g2p/FY-02-2678.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-rec/FY-02-2678.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-real/FY-02-2678.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-g2p/FY-02-2678.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-rec/FY-02-2678.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>15</td>
+        <td class="transcript">Wêr is se ferstoarn? wol Yme de spanning brekke.</td>
+        <td>
+          <audio src="../audio/nodict-IS23/resynth/FY-02-1370.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-real/FY-02-1370.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-g2p/FY-02-1370.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-rec/FY-02-1370.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-real/FY-02-1370.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-g2p/FY-02-1370.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-rec/FY-02-1370.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>16</td>
+        <td class="transcript">Wy sille it sjen.</td>
+        <td>
+          <audio src="../audio/nodict-IS23/resynth/FY-02-896.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-real/FY-02-896.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-g2p/FY-02-896.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-rec/FY-02-896.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-real/FY-02-896.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-g2p/FY-02-896.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-rec/FY-02-896.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>17</td>
+        <td class="transcript">Daalks kom ik wer, sei ik ekstra lûd, om fuort myn oandacht nei Inge te ferpleatsen, dy't noch altyd ferwoeden besocht om Hindrik syn riem los te krijen.</td>
+        <td>
+          <audio src="../audio/nodict-IS23/resynth/FY-02-2200.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-real/FY-02-2200.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-g2p/FY-02-2200.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-rec/FY-02-2200.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-real/FY-02-2200.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-g2p/FY-02-2200.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-rec/FY-02-2200.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>18</td>
+        <td class="transcript">in situaasje dêr't er him by dellei.</td>
+        <td>
+          <audio src="../audio/nodict-IS23/resynth/FY-02-342.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-real/FY-02-342.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-g2p/FY-02-342.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-rec/FY-02-342.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-real/FY-02-342.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-g2p/FY-02-342.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-rec/FY-02-342.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>19</td>
+        <td class="transcript">Mar Kor en ik sieten yn dy tunnel, wy tochten werklik dat er ús bedondere.</td>
+        <td>
+          <audio src="../audio/nodict-IS23/resynth/FY-02-2016.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-real/FY-02-2016.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-g2p/FY-02-2016.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-rec/FY-02-2016.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-real/FY-02-2016.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-g2p/FY-02-2016.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-rec/FY-02-2016.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>20</td>
+        <td class="transcript">Myn oare konklúzjes dielde ik net, want ik wie der net wis fan wêr't heit syn winsk presys wei kaam.</td>
+        <td>
+          <audio src="../audio/nodict-IS23/resynth/FY-02-711.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-real/FY-02-711.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-g2p/FY-02-711.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ph-rec/FY-02-711.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-real/FY-02-711.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-g2p/FY-02-711.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/nodict-IS23/ft-rec/FY-02-711.wav" controls=""></audio>
+        </td>
+      </tr>
+
+
+
+    </tbody>
+  </table>
+
+</body>
+
+</html>
