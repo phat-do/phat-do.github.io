@@ -1,0 +1,3457 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="generator" content="Google Web Designer 14.0.4.1108">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <title>Strategies in Transfer Learning for Low-Resource Speech Synthesis:\\ Phone Mapping, Features Input, and Source Language Selection</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    // audio pause seeks to beginning
+    $(function() {
+      $("audio").on("pause", function() {
+        this.currentTime = 0;
+      });
+    });
+    // audio play stops any other playing audio
+    $(function() {
+      $("audio").on("play", function() {
+        $("audio").not(this).each(function(index, audio) {
+          audio.pause();
+          audio.currentTime = 0;
+        });
+      });
+    });
+  </script>
+  <style>
+    audio {
+      width: 100px;
+    }
+    td {
+      text-align: center;
+    }
+    td.transcript {
+      text-align: left;
+    }
+    .gwd-span-1n92 {
+      font-weight: normal;
+      font-size: 28px;
+    }
+    .gwd-span-qv7t {
+      font-size: 18px;
+    }
+    .gwd-strong-1gua {
+      font-size: 20px;
+    }
+    .gwd-span-1cxx {
+      font-style: italic;
+    }
+    .gwd-span-mea8 {
+      font-style: italic;
+    }
+    .gwd-span-mk6x {
+      font-style: italic;
+    }
+    .gwd-span-1akz {
+      color: red;
+    }
+    .gwd-span-1ufo {
+      font-size: 14px;
+    }
+  </style>
+</head>
+ 
+<body class="htmlNoPages">
+  <h1 class="">Strategies in Transfer Learning for Low-Resource Speech Synthesis: Phone Mapping, Features Input, and Source Language Selection</span></h1>
+  <p class="">
+    <span class="gwd-span-qv7t">Anonymous submission to 12th ISCA Speech Synthesis Workshop (SSW 2023)</span><br>
+    
+  <hr>
+  <p class="">
+    This is the (anonymous version of the) companion webpage for our paper "Strategies in Transfer Learning for Low-Resource Speech Synthesis: Phone Mapping, Features Input, and Source Language Selection", submitted to SSW 2023.</p>
+  <p class="">Below we present some of the synthetic audio samples from our experiment in the 6 low-resource languages (<a href="#bulgarian">Bulgarian</a>, <a href="#georgian">Georgian</a>, <a href="#kazakh">Kazakh</a>, <a href="#swahili">Swahili</a>, <a href="#urdu">Urdu</a>, and <a href="#uzbek">Uzbek</a>). For each language, we synthesized a total of 100 utterances, which were guaranteed to have a phoneme distribution as close as possible to that languages' training data (10 minutes, 160 to 200 utterances), and used them for evaluation. To avoid cluttering the page, here we only include 10 randomly-selected utterances as examples for each language.
+  </p>
+
+  <ul class="">
+    <li><span class="gwd-span-1cxx">Text </span>- Orthographic text of the utterance</li>
+    <li><span class="gwd-span-1cxx">Ground-truth </span>- Human recording of the utterance</li>
+    <li><span class="gwd-span-mea8">English (en-US) </span>- Source language (language of the pre-trained model)</li>
+    <li><span class="gwd-span-mea8">Nomap </span>- Sample from model fine-tuned without phoneme mapping</li>
+    <li><span class="gwd-span-mk6x">Map </span>- Sample from model fine-tuned with phoneme mapping</li>
+    <li><span class="gwd-span-mk6x">Feature </span>- Sample from model fine-tuned with phonological features input</li>
+  </ul>
+
+  <h3 class=""><a id="bulgarian">1. Bulgarian</a></h3>
+  <table border="1">
+    <tbody>
+      <tr>
+        <td rowspan="2">#</td>
+        <td rowspan="2">Text</td>
+        <td rowspan="2">Ground-truth</td>
+        <td colspan="3">English (en-US)</td>
+        <td colspan="3">Finnish (fi)</td>
+        <td colspan="3">Hindu (hi)</td>
+        <td colspan="3">Japanese (ja)</td>
+        <td colspan="3">Russian (ru)</td>
+      </tr>
+      <tr>
+        <td>Nomap</td>
+        <td>Map</td>
+        <td>Feature</td>
+        <td>Nomap</td>
+        <td>Map</td>
+        <td>Feature</td>
+        <td>Nomap</td>
+        <td>Map</td>
+        <td>Feature</td>
+        <td>Nomap</td>
+        <td>Map</td>
+        <td>Feature</td>
+        <td>Nomap</td>
+        <td>Map</td>
+        <td>Feature</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td class="transcript">понякога, като разбереше какво я пита кметът, отговаряше с една-две думи.</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/bg/common_voice_bg_25059953.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___bg/common_voice_bg_25059953.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___bg/common_voice_bg_25059953.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___bg/common_voice_bg_25059953.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___bg/common_voice_bg_25059953.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___bg/common_voice_bg_25059953.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___bg/common_voice_bg_25059953.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___bg/common_voice_bg_25059953.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___bg/common_voice_bg_25059953.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___bg/common_voice_bg_25059953.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___bg/common_voice_bg_25059953.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___bg/common_voice_bg_25059953.wav" controls=""></audio>s
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___bg/common_voice_bg_25059953.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___bg/common_voice_bg_25059953.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___bg/common_voice_bg_25059953.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___bg/common_voice_bg_25059953.wav" controls=""></audio>
+        </td>
+        
+      </tr>
+      
+      <tr>
+        <td>2</td>
+        <td class="transcript">и всички гледаха към султана и чакаха какво ще каже.</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/bg/common_voice_bg_25111986.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___bg/common_voice_bg_25111986.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___bg/common_voice_bg_25111986.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___bg/common_voice_bg_25111986.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___bg/common_voice_bg_25111986.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___bg/common_voice_bg_25111986.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___bg/common_voice_bg_25111986.wav" controls=""></audio>
+        </td>
+<td>    
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___bg/common_voice_bg_25111986.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___bg/common_voice_bg_25111986.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___bg/common_voice_bg_25111986.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___bg/common_voice_bg_25111986.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___bg/common_voice_bg_25111986.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___bg/common_voice_bg_25111986.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___bg/common_voice_bg_25111986.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___bg/common_voice_bg_25111986.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___bg/common_voice_bg_25111986.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>3</td>
+        <td class="transcript">чуват ли се там песни, свирят ли гайди, кавали?</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/bg/common_voice_bg_25680232.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___bg/common_voice_bg_25680232.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___bg/common_voice_bg_25680232.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___bg/common_voice_bg_25680232.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___bg/common_voice_bg_25680232.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___bg/common_voice_bg_25680232.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___bg/common_voice_bg_25680232.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___bg/common_voice_bg_25680232.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___bg/common_voice_bg_25680232.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___bg/common_voice_bg_25680232.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___bg/common_voice_bg_25680232.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___bg/common_voice_bg_25680232.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___bg/common_voice_bg_25680232.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___bg/common_voice_bg_25680232.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___bg/common_voice_bg_25680232.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___bg/common_voice_bg_25680232.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>4</td>
+        <td class="transcript">тежко и горко на моето пътувание!</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/bg/common_voice_bg_25105345.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___bg/common_voice_bg_25105345.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___bg/common_voice_bg_25105345.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___bg/common_voice_bg_25105345.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___bg/common_voice_bg_25105345.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___bg/common_voice_bg_25105345.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___bg/common_voice_bg_25105345.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___bg/common_voice_bg_25105345.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___bg/common_voice_bg_25105345.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___bg/common_voice_bg_25105345.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___bg/common_voice_bg_25105345.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___bg/common_voice_bg_25105345.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___bg/common_voice_bg_25105345.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___bg/common_voice_bg_25105345.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___bg/common_voice_bg_25105345.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___bg/common_voice_bg_25105345.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>5</td>
+        <td class="transcript">останали бяха сухи утъпкани кръгове, загаснали огньове, дрипи.</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/bg/common_voice_bg_25083254.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___bg/common_voice_bg_25083254.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___bg/common_voice_bg_25083254.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___bg/common_voice_bg_25083254.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___bg/common_voice_bg_25083254.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___bg/common_voice_bg_25083254.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___bg/common_voice_bg_25083254.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___bg/common_voice_bg_25083254.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___bg/common_voice_bg_25083254.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___bg/common_voice_bg_25083254.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___bg/common_voice_bg_25083254.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___bg/common_voice_bg_25083254.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___bg/common_voice_bg_25083254.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___bg/common_voice_bg_25083254.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___bg/common_voice_bg_25083254.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___bg/common_voice_bg_25083254.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>6</td>
+        <td class="transcript">баба яна стана, прозина се, протегна се, като че беше забравила лудориите на гърбавото.</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/bg/common_voice_bg_27395816.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___bg/common_voice_bg_27395816.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___bg/common_voice_bg_27395816.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___bg/common_voice_bg_27395816.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___bg/common_voice_bg_27395816.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___bg/common_voice_bg_27395816.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___bg/common_voice_bg_27395816.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___bg/common_voice_bg_27395816.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___bg/common_voice_bg_27395816.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___bg/common_voice_bg_27395816.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___bg/common_voice_bg_27395816.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___bg/common_voice_bg_27395816.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___bg/common_voice_bg_27395816.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___bg/common_voice_bg_27395816.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___bg/common_voice_bg_27395816.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___bg/common_voice_bg_27395816.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>7</td>
+        <td class="transcript">когато се касае за душата - колко пари чинат дрехите?</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/bg/common_voice_bg_25059891.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___bg/common_voice_bg_25059891.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___bg/common_voice_bg_25059891.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___bg/common_voice_bg_25059891.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___bg/common_voice_bg_25059891.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___bg/common_voice_bg_25059891.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___bg/common_voice_bg_25059891.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___bg/common_voice_bg_25059891.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___bg/common_voice_bg_25059891.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___bg/common_voice_bg_25059891.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___bg/common_voice_bg_25059891.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___bg/common_voice_bg_25059891.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___bg/common_voice_bg_25059891.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___bg/common_voice_bg_25059891.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___bg/common_voice_bg_25059891.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___bg/common_voice_bg_25059891.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>8</td>
+        <td class="transcript">и много ми е жал за този ръкопис.</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/bg/common_voice_bg_25155028.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___bg/common_voice_bg_25155028.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___bg/common_voice_bg_25155028.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___bg/common_voice_bg_25155028.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___bg/common_voice_bg_25155028.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___bg/common_voice_bg_25155028.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___bg/common_voice_bg_25155028.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___bg/common_voice_bg_25155028.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___bg/common_voice_bg_25155028.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___bg/common_voice_bg_25155028.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___bg/common_voice_bg_25155028.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___bg/common_voice_bg_25155028.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___bg/common_voice_bg_25155028.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___bg/common_voice_bg_25155028.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___bg/common_voice_bg_25155028.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___bg/common_voice_bg_25155028.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>9</td>
+        <td class="transcript">булка, остави мотиката и почини си!</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/bg/common_voice_bg_25176397.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___bg/common_voice_bg_25176397.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___bg/common_voice_bg_25176397.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___bg/common_voice_bg_25176397.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___bg/common_voice_bg_25176397.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___bg/common_voice_bg_25176397.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___bg/common_voice_bg_25176397.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___bg/common_voice_bg_25176397.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___bg/common_voice_bg_25176397.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___bg/common_voice_bg_25176397.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___bg/common_voice_bg_25176397.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___bg/common_voice_bg_25176397.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___bg/common_voice_bg_25176397.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___bg/common_voice_bg_25176397.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___bg/common_voice_bg_25176397.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___bg/common_voice_bg_25176397.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>10</td>
+        <td class="transcript">огнянов забележи техните измършавели и хлътнали лица.</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/bg/common_voice_bg_25257162.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___bg/common_voice_bg_25257162.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___bg/common_voice_bg_25257162.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___bg/common_voice_bg_25257162.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___bg/common_voice_bg_25257162.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___bg/common_voice_bg_25257162.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___bg/common_voice_bg_25257162.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___bg/common_voice_bg_25257162.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___bg/common_voice_bg_25257162.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___bg/common_voice_bg_25257162.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___bg/common_voice_bg_25257162.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___bg/common_voice_bg_25257162.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___bg/common_voice_bg_25257162.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___bg/common_voice_bg_25257162.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___bg/common_voice_bg_25257162.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___bg/common_voice_bg_25257162.wav" controls=""></audio>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <h3 class=""><a id="georgian">2. Georgian</a></h3>
+  <table border="1">
+    <tbody>
+      <tr>
+        <td rowspan="2">#</td>
+        <td rowspan="2">Text</td>
+        <td rowspan="2">Ground-truth</td>
+        <td colspan="3">English (en-US)</td>
+        <td colspan="3">Finnish (fi)</td>
+        <td colspan="3">Hindu (hi)</td>
+        <td colspan="3">Japanese (ja)</td>
+        <td colspan="3">Russian (ru)</td>
+      </tr>
+      <tr>
+        <td>Nomap</td>
+        <td>Map</td>
+        <td>Feature</td>
+        <td>Nomap</td>
+        <td>Map</td>
+        <td>Feature</td>
+        <td>Nomap</td>
+        <td>Map</td>
+        <td>Feature</td>
+        <td>Nomap</td>
+        <td>Map</td>
+        <td>Feature</td>
+        <td>Nomap</td>
+        <td>Map</td>
+        <td>Feature</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td class="transcript">სოფელი უკვე შუა საუკუნეებიდან თავისი თეთრი ლუდით იყო განთქმული.</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/ka/common_voice_ka_25432361.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___ka/common_voice_ka_25432361.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___ka/common_voice_ka_25432361.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___ka/common_voice_ka_25432361.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___ka/common_voice_ka_25432361.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___ka/common_voice_ka_25432361.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___ka/common_voice_ka_25432361.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___ka/common_voice_ka_25432361.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___ka/common_voice_ka_25432361.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___ka/common_voice_ka_25432361.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___ka/common_voice_ka_25432361.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___ka/common_voice_ka_25432361.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___ka/common_voice_ka_25432361.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___ka/common_voice_ka_25432361.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___ka/common_voice_ka_25432361.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___ka/common_voice_ka_25432361.wav" controls=""></audio>
+        </td>
+      </tr>
+      
+      <tr>
+        <td>2</td>
+        <td class="transcript">აქვს გასასვლელი ადრიატიკის ზღვაზე.</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/ka/common_voice_ka_25188971.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___ka/common_voice_ka_25188971.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___ka/common_voice_ka_25188971.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___ka/common_voice_ka_25188971.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___ka/common_voice_ka_25188971.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___ka/common_voice_ka_25188971.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___ka/common_voice_ka_25188971.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___ka/common_voice_ka_25188971.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___ka/common_voice_ka_25188971.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___ka/common_voice_ka_25188971.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___ka/common_voice_ka_25188971.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___ka/common_voice_ka_25188971.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___ka/common_voice_ka_25188971.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___ka/common_voice_ka_25188971.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___ka/common_voice_ka_25188971.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___ka/common_voice_ka_25188971.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>3</td>
+        <td class="transcript">აკრძალული ჰქონდა თბილისში ცხოვრება.</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/ka/common_voice_ka_25334468.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___ka/common_voice_ka_25334468.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___ka/common_voice_ka_25334468.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___ka/common_voice_ka_25334468.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___ka/common_voice_ka_25334468.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___ka/common_voice_ka_25334468.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___ka/common_voice_ka_25334468.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___ka/common_voice_ka_25334468.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___ka/common_voice_ka_25334468.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___ka/common_voice_ka_25334468.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___ka/common_voice_ka_25334468.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___ka/common_voice_ka_25334468.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___ka/common_voice_ka_25334468.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___ka/common_voice_ka_25334468.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___ka/common_voice_ka_25334468.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___ka/common_voice_ka_25334468.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>4</td>
+        <td class="transcript">მათი ურთიერთობა თანდათან დრამატულ ხასიათს იღებს.</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/ka/common_voice_ka_25356965.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___ka/common_voice_ka_25356965.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___ka/common_voice_ka_25356965.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___ka/common_voice_ka_25356965.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___ka/common_voice_ka_25356965.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___ka/common_voice_ka_25356965.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___ka/common_voice_ka_25356965.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___ka/common_voice_ka_25356965.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___ka/common_voice_ka_25356965.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___ka/common_voice_ka_25356965.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___ka/common_voice_ka_25356965.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___ka/common_voice_ka_25356965.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___ka/common_voice_ka_25356965.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___ka/common_voice_ka_25356965.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___ka/common_voice_ka_25356965.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___ka/common_voice_ka_25356965.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>5</td>
+        <td class="transcript">ძველ მსოფლიოში ნაწნავს არა მარტო ქალები იკეთებდნენ.</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/ka/common_voice_ka_25965635.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___ka/common_voice_ka_25965635.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___ka/common_voice_ka_25965635.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___ka/common_voice_ka_25965635.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___ka/common_voice_ka_25965635.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___ka/common_voice_ka_25965635.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___ka/common_voice_ka_25965635.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___ka/common_voice_ka_25965635.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___ka/common_voice_ka_25965635.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___ka/common_voice_ka_25965635.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___ka/common_voice_ka_25965635.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___ka/common_voice_ka_25965635.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___ka/common_voice_ka_25965635.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___ka/common_voice_ka_25965635.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___ka/common_voice_ka_25965635.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___ka/common_voice_ka_25965635.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>6</td>
+        <td class="transcript">სამხრეთი კალთები ციცაბოდ ეშვება ალაის ხეობისკენ.</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/ka/common_voice_ka_25197379.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___ka/common_voice_ka_25197379.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___ka/common_voice_ka_25197379.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___ka/common_voice_ka_25197379.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___ka/common_voice_ka_25197379.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___ka/common_voice_ka_25197379.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___ka/common_voice_ka_25197379.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___ka/common_voice_ka_25197379.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___ka/common_voice_ka_25197379.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___ka/common_voice_ka_25197379.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___ka/common_voice_ka_25197379.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___ka/common_voice_ka_25197379.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___ka/common_voice_ka_25197379.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___ka/common_voice_ka_25197379.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___ka/common_voice_ka_25197379.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___ka/common_voice_ka_25197379.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>7</td>
+        <td class="transcript">დაამთავრა ხაზარის უნივერსიტეტი სპეციალობით ეკონომიკა და მართვა.</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/ka/common_voice_ka_28630297.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___ka/common_voice_ka_28630297.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___ka/common_voice_ka_28630297.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___ka/common_voice_ka_28630297.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___ka/common_voice_ka_28630297.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___ka/common_voice_ka_28630297.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___ka/common_voice_ka_28630297.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___ka/common_voice_ka_28630297.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___ka/common_voice_ka_28630297.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___ka/common_voice_ka_28630297.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___ka/common_voice_ka_28630297.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___ka/common_voice_ka_28630297.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___ka/common_voice_ka_28630297.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___ka/common_voice_ka_28630297.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___ka/common_voice_ka_28630297.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___ka/common_voice_ka_28630297.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>8</td>
+        <td class="transcript">მწვერვალები უმეტესწილად ბრტყელია.</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/ka/common_voice_ka_25359011.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___ka/common_voice_ka_25359011.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___ka/common_voice_ka_25359011.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___ka/common_voice_ka_25359011.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___ka/common_voice_ka_25359011.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___ka/common_voice_ka_25359011.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___ka/common_voice_ka_25359011.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___ka/common_voice_ka_25359011.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___ka/common_voice_ka_25359011.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___ka/common_voice_ka_25359011.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___ka/common_voice_ka_25359011.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___ka/common_voice_ka_25359011.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___ka/common_voice_ka_25359011.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___ka/common_voice_ka_25359011.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___ka/common_voice_ka_25359011.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___ka/common_voice_ka_25359011.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>9</td>
+        <td class="transcript">კონტინენტურ დანიას უკავშირდება ზღვაში გაკეთებული დამბის გზით.</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/ka/common_voice_ka_25099068.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___ka/common_voice_ka_25099068.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___ka/common_voice_ka_25099068.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___ka/common_voice_ka_25099068.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___ka/common_voice_ka_25099068.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___ka/common_voice_ka_25099068.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___ka/common_voice_ka_25099068.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___ka/common_voice_ka_25099068.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___ka/common_voice_ka_25099068.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___ka/common_voice_ka_25099068.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___ka/common_voice_ka_25099068.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___ka/common_voice_ka_25099068.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___ka/common_voice_ka_25099068.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___ka/common_voice_ka_25099068.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___ka/common_voice_ka_25099068.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___ka/common_voice_ka_25099068.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>10</td>
+        <td class="transcript">სკოტი და ალექსი ამგვარად დაუსხლტა შიარის იმპერიას.</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/ka/common_voice_ka_26126133.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___ka/common_voice_ka_26126133.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___ka/common_voice_ka_26126133.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___ka/common_voice_ka_26126133.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___ka/common_voice_ka_26126133.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___ka/common_voice_ka_26126133.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___ka/common_voice_ka_26126133.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___ka/common_voice_ka_26126133.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___ka/common_voice_ka_26126133.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___ka/common_voice_ka_26126133.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___ka/common_voice_ka_26126133.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___ka/common_voice_ka_26126133.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___ka/common_voice_ka_26126133.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___ka/common_voice_ka_26126133.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___ka/common_voice_ka_26126133.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___ka/common_voice_ka_26126133.wav" controls=""></audio>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 class=""><a id="kazakh">3. Kazakh</a></h3>
+  <table border="1">
+    <tbody>
+      <tr>
+        <td rowspan="2">#</td>
+        <td rowspan="2">Text</td>
+        <td rowspan="2">Ground-truth</td>
+        <td colspan="3">English (en-US)</td>
+        <td colspan="3">Finnish (fi)</td>
+        <td colspan="3">Hindu (hi)</td>
+        <td colspan="3">Japanese (ja)</td>
+        <td colspan="3">Russian (ru)</td>
+      </tr>
+      <tr>
+        <td>Nomap</td>
+        <td>Map</td>
+        <td>Feature</td>
+        <td>Nomap</td>
+        <td>Map</td>
+        <td>Feature</td>
+        <td>Nomap</td>
+        <td>Map</td>
+        <td>Feature</td>
+        <td>Nomap</td>
+        <td>Map</td>
+        <td>Feature</td>
+        <td>Nomap</td>
+        <td>Map</td>
+        <td>Feature</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td class="transcript">жалғыз иттің үргені білінбес, жалғыз кісінің жүргені білінбес.</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/kk/common_voice_kk_24983526.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___kk/common_voice_kk_24983526.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___kk/common_voice_kk_24983526.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___kk/common_voice_kk_24983526.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___kk/common_voice_kk_24983526.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___kk/common_voice_kk_24983526.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___kk/common_voice_kk_24983526.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___kk/common_voice_kk_24983526.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___kk/common_voice_kk_24983526.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___kk/common_voice_kk_24983526.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___kk/common_voice_kk_24983526.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___kk/common_voice_kk_24983526.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___kk/common_voice_kk_24983526.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___kk/common_voice_kk_24983526.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___kk/common_voice_kk_24983526.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___kk/common_voice_kk_24983526.wav" controls=""></audio>
+        </td>
+      </tr>
+      
+      <tr>
+        <td>2</td>
+        <td class="transcript">отансыз да бір, опасыз да бір.</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/kk/common_voice_kk_32123410.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___kk/common_voice_kk_32123410.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___kk/common_voice_kk_32123410.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___kk/common_voice_kk_32123410.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___kk/common_voice_kk_32123410.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___kk/common_voice_kk_32123410.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___kk/common_voice_kk_32123410.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___kk/common_voice_kk_32123410.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___kk/common_voice_kk_32123410.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___kk/common_voice_kk_32123410.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___kk/common_voice_kk_32123410.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___kk/common_voice_kk_32123410.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___kk/common_voice_kk_32123410.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___kk/common_voice_kk_32123410.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___kk/common_voice_kk_32123410.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___kk/common_voice_kk_32123410.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>3</td>
+        <td class="transcript">жаманның ақылы түстен кейін, жақсының қадірі істен кейін.</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/kk/common_voice_kk_24981927.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___kk/common_voice_kk_24981927.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___kk/common_voice_kk_24981927.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___kk/common_voice_kk_24981927.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___kk/common_voice_kk_24981927.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___kk/common_voice_kk_24981927.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___kk/common_voice_kk_24981927.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___kk/common_voice_kk_24981927.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___kk/common_voice_kk_24981927.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___kk/common_voice_kk_24981927.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___kk/common_voice_kk_24981927.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___kk/common_voice_kk_24981927.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___kk/common_voice_kk_24981927.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___kk/common_voice_kk_24981927.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___kk/common_voice_kk_24981927.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___kk/common_voice_kk_24981927.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>4</td>
+        <td class="transcript">ғылымнан білім зор, білімсіз ғылым - қор.</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/kk/common_voice_kk_24983129.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___kk/common_voice_kk_24983129.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___kk/common_voice_kk_24983129.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___kk/common_voice_kk_24983129.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___kk/common_voice_kk_24983129.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___kk/common_voice_kk_24983129.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___kk/common_voice_kk_24983129.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___kk/common_voice_kk_24983129.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___kk/common_voice_kk_24983129.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___kk/common_voice_kk_24983129.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___kk/common_voice_kk_24983129.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___kk/common_voice_kk_24983129.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___kk/common_voice_kk_24983129.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___kk/common_voice_kk_24983129.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___kk/common_voice_kk_24983129.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___kk/common_voice_kk_24983129.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>5</td>
+        <td class="transcript">мейірімділік жүректен, мейірімсіздік білектен.</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/kk/common_voice_kk_30537717.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___kk/common_voice_kk_30537717.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___kk/common_voice_kk_30537717.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___kk/common_voice_kk_30537717.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___kk/common_voice_kk_30537717.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___kk/common_voice_kk_30537717.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___kk/common_voice_kk_30537717.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___kk/common_voice_kk_30537717.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___kk/common_voice_kk_30537717.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___kk/common_voice_kk_30537717.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___kk/common_voice_kk_30537717.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___kk/common_voice_kk_30537717.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___kk/common_voice_kk_30537717.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___kk/common_voice_kk_30537717.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___kk/common_voice_kk_30537717.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___kk/common_voice_kk_30537717.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>6</td>
+        <td class="transcript">алдамшыда ар болмас.</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/kk/common_voice_kk_24982621.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___kk/common_voice_kk_24982621.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___kk/common_voice_kk_24982621.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___kk/common_voice_kk_24982621.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___kk/common_voice_kk_24982621.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___kk/common_voice_kk_24982621.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___kk/common_voice_kk_24982621.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___kk/common_voice_kk_24982621.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___kk/common_voice_kk_24982621.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___kk/common_voice_kk_24982621.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___kk/common_voice_kk_24982621.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___kk/common_voice_kk_24982621.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___kk/common_voice_kk_24982621.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___kk/common_voice_kk_24982621.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___kk/common_voice_kk_24982621.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___kk/common_voice_kk_24982621.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>7</td>
+        <td class="transcript">құлпырған жас - гүлденген өмір.</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/kk/common_voice_kk_24982087.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___kk/common_voice_kk_24982087.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___kk/common_voice_kk_24982087.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___kk/common_voice_kk_24982087.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___kk/common_voice_kk_24982087.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___kk/common_voice_kk_24982087.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___kk/common_voice_kk_24982087.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___kk/common_voice_kk_24982087.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___kk/common_voice_kk_24982087.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___kk/common_voice_kk_24982087.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___kk/common_voice_kk_24982087.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___kk/common_voice_kk_24982087.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___kk/common_voice_kk_24982087.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___kk/common_voice_kk_24982087.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___kk/common_voice_kk_24982087.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___kk/common_voice_kk_24982087.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>8</td>
+        <td class="transcript">кәсіпсіз нәсіп жоқ.</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/kk/common_voice_kk_26386508.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___kk/common_voice_kk_26386508.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___kk/common_voice_kk_26386508.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___kk/common_voice_kk_26386508.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___kk/common_voice_kk_26386508.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___kk/common_voice_kk_26386508.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___kk/common_voice_kk_26386508.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___kk/common_voice_kk_26386508.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___kk/common_voice_kk_26386508.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___kk/common_voice_kk_26386508.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___kk/common_voice_kk_26386508.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___kk/common_voice_kk_26386508.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___kk/common_voice_kk_26386508.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___kk/common_voice_kk_26386508.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___kk/common_voice_kk_26386508.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___kk/common_voice_kk_26386508.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>9</td>
+        <td class="transcript">түйедей бой бергенше, түймедей ой берсін.</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/kk/common_voice_kk_30537698.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___kk/common_voice_kk_30537698.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___kk/common_voice_kk_30537698.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___kk/common_voice_kk_30537698.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___kk/common_voice_kk_30537698.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___kk/common_voice_kk_30537698.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___kk/common_voice_kk_30537698.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___kk/common_voice_kk_30537698.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___kk/common_voice_kk_30537698.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___kk/common_voice_kk_30537698.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___kk/common_voice_kk_30537698.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___kk/common_voice_kk_30537698.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___kk/common_voice_kk_30537698.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___kk/common_voice_kk_30537698.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___kk/common_voice_kk_30537698.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___kk/common_voice_kk_30537698.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>10</td>
+        <td class="transcript">жақсыдан айтқан ғибрат өлгеніңше ұмытылмайды.</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/kk/common_voice_kk_27641200.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___kk/common_voice_kk_27641200.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___kk/common_voice_kk_27641200.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___kk/common_voice_kk_27641200.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___kk/common_voice_kk_27641200.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___kk/common_voice_kk_27641200.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___kk/common_voice_kk_27641200.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___kk/common_voice_kk_27641200.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___kk/common_voice_kk_27641200.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___kk/common_voice_kk_27641200.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___kk/common_voice_kk_27641200.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___kk/common_voice_kk_27641200.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___kk/common_voice_kk_27641200.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___kk/common_voice_kk_27641200.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___kk/common_voice_kk_27641200.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___kk/common_voice_kk_27641200.wav" controls=""></audio>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 class=""><a id="swahili">4. Swahili</a></h3>
+  <table border="1">
+    <tbody>
+      <tr>
+        <td rowspan="2">#</td>
+        <td rowspan="2">Text</td>
+        <td rowspan="2">Ground-truth</td>
+        <td colspan="3">English (en-US)</td>
+        <td colspan="3">Finnish (fi)</td>
+        <td colspan="3">Hindu (hi)</td>
+        <td colspan="3">Japanese (ja)</td>
+        <td colspan="3">Russian (ru)</td>
+      </tr>
+      <tr>
+        <td>Nomap</td>
+        <td>Map</td>
+        <td>Feature</td>
+        <td>Nomap</td>
+        <td>Map</td>
+        <td>Feature</td>
+        <td>Nomap</td>
+        <td>Map</td>
+        <td>Feature</td>
+        <td>Nomap</td>
+        <td>Map</td>
+        <td>Feature</td>
+        <td>Nomap</td>
+        <td>Map</td>
+        <td>Feature</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td class="transcript">manchester united haikushinda taji la ulaya licha ya kuingia fainali</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/sw/common_voice_sw_29818086.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___sw/common_voice_sw_29818086.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___sw/common_voice_sw_29818086.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___sw/common_voice_sw_29818086.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___sw/common_voice_sw_29818086.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___sw/common_voice_sw_29818086.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___sw/common_voice_sw_29818086.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___sw/common_voice_sw_29818086.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___sw/common_voice_sw_29818086.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___sw/common_voice_sw_29818086.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___sw/common_voice_sw_29818086.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___sw/common_voice_sw_29818086.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___sw/common_voice_sw_29818086.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___sw/common_voice_sw_29818086.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___sw/common_voice_sw_29818086.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___sw/common_voice_sw_29818086.wav" controls=""></audio>
+        </td>
+      </tr>
+      
+      <tr>
+        <td>2</td>
+        <td class="transcript">wazigua na wanguu pia ukaribu wao uko katika lugha</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/sw/common_voice_sw_30126108.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___sw/common_voice_sw_30126108.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___sw/common_voice_sw_30126108.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___sw/common_voice_sw_30126108.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___sw/common_voice_sw_30126108.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___sw/common_voice_sw_30126108.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___sw/common_voice_sw_30126108.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___sw/common_voice_sw_30126108.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___sw/common_voice_sw_30126108.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___sw/common_voice_sw_30126108.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___sw/common_voice_sw_30126108.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___sw/common_voice_sw_30126108.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___sw/common_voice_sw_30126108.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___sw/common_voice_sw_30126108.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___sw/common_voice_sw_30126108.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___sw/common_voice_sw_30126108.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>3</td>
+        <td class="transcript">milima hii inawavutia watu wengi na mashuhuri duniani</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/sw/common_voice_sw_29885786.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___sw/common_voice_sw_29885786.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___sw/common_voice_sw_29885786.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___sw/common_voice_sw_29885786.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___sw/common_voice_sw_29885786.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___sw/common_voice_sw_29885786.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___sw/common_voice_sw_29885786.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___sw/common_voice_sw_29885786.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___sw/common_voice_sw_29885786.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___sw/common_voice_sw_29885786.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___sw/common_voice_sw_29885786.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___sw/common_voice_sw_29885786.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___sw/common_voice_sw_29885786.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___sw/common_voice_sw_29885786.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___sw/common_voice_sw_29885786.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___sw/common_voice_sw_29885786.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>4</td>
+        <td class="transcript">biashara ya kondoo inasaidia kuboresha hali ya uchumi</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/sw/common_voice_sw_30003597.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___sw/common_voice_sw_30003597.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___sw/common_voice_sw_30003597.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___sw/common_voice_sw_30003597.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___sw/common_voice_sw_30003597.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___sw/common_voice_sw_30003597.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___sw/common_voice_sw_30003597.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___sw/common_voice_sw_30003597.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___sw/common_voice_sw_30003597.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___sw/common_voice_sw_30003597.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___sw/common_voice_sw_30003597.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___sw/common_voice_sw_30003597.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___sw/common_voice_sw_30003597.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___sw/common_voice_sw_30003597.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___sw/common_voice_sw_30003597.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___sw/common_voice_sw_30003597.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>5</td>
+        <td class="transcript">na liporejea nchini aliajiriwa kuwa afisa mipango visiwani zanzibari</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/sw/common_voice_sw_29909632.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___sw/common_voice_sw_29909632.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___sw/common_voice_sw_29909632.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___sw/common_voice_sw_29909632.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___sw/common_voice_sw_29909632.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___sw/common_voice_sw_29909632.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___sw/common_voice_sw_29909632.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___sw/common_voice_sw_29909632.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___sw/common_voice_sw_29909632.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___sw/common_voice_sw_29909632.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___sw/common_voice_sw_29909632.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___sw/common_voice_sw_29909632.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___sw/common_voice_sw_29909632.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___sw/common_voice_sw_29909632.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___sw/common_voice_sw_29909632.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___sw/common_voice_sw_29909632.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>6</td>
+        <td class="transcript">kigweno ni mchanganyika wa kipare na kichaga</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/sw/common_voice_sw_30051704.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___sw/common_voice_sw_30051704.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___sw/common_voice_sw_30051704.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___sw/common_voice_sw_30051704.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___sw/common_voice_sw_30051704.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___sw/common_voice_sw_30051704.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___sw/common_voice_sw_30051704.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___sw/common_voice_sw_30051704.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___sw/common_voice_sw_30051704.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___sw/common_voice_sw_30051704.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___sw/common_voice_sw_30051704.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___sw/common_voice_sw_30051704.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___sw/common_voice_sw_30051704.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___sw/common_voice_sw_30051704.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___sw/common_voice_sw_30051704.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___sw/common_voice_sw_30051704.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>7</td>
+        <td class="transcript">timu nyingi za hispania zinafanya vizuri ulaya</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/sw/common_voice_sw_29818753.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___sw/common_voice_sw_29818753.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___sw/common_voice_sw_29818753.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___sw/common_voice_sw_29818753.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___sw/common_voice_sw_29818753.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___sw/common_voice_sw_29818753.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___sw/common_voice_sw_29818753.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___sw/common_voice_sw_29818753.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___sw/common_voice_sw_29818753.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___sw/common_voice_sw_29818753.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___sw/common_voice_sw_29818753.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___sw/common_voice_sw_29818753.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___sw/common_voice_sw_29818753.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___sw/common_voice_sw_29818753.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___sw/common_voice_sw_29818753.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___sw/common_voice_sw_29818753.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>8</td>
+        <td class="transcript">mandela akachaguliwa kwa wingi kukiongoza chama chake</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/sw/common_voice_sw_30362371.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___sw/common_voice_sw_30362371.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___sw/common_voice_sw_30362371.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___sw/common_voice_sw_30362371.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___sw/common_voice_sw_30362371.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___sw/common_voice_sw_30362371.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___sw/common_voice_sw_30362371.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___sw/common_voice_sw_30362371.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___sw/common_voice_sw_30362371.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___sw/common_voice_sw_30362371.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___sw/common_voice_sw_30362371.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___sw/common_voice_sw_30362371.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___sw/common_voice_sw_30362371.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___sw/common_voice_sw_30362371.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___sw/common_voice_sw_30362371.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___sw/common_voice_sw_30362371.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>9</td>
+        <td class="transcript">aliyehamia uislamu mnamo elfu moja mia tisa na kumi</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/sw/common_voice_sw_30325496.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___sw/common_voice_sw_30325496.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___sw/common_voice_sw_30325496.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___sw/common_voice_sw_30325496.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___sw/common_voice_sw_30325496.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___sw/common_voice_sw_30325496.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___sw/common_voice_sw_30325496.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___sw/common_voice_sw_30325496.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___sw/common_voice_sw_30325496.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___sw/common_voice_sw_30325496.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___sw/common_voice_sw_30325496.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___sw/common_voice_sw_30325496.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___sw/common_voice_sw_30325496.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___sw/common_voice_sw_30325496.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___sw/common_voice_sw_30325496.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___sw/common_voice_sw_30325496.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>10</td>
+        <td class="transcript">uwekezaji katika mashirika yasiyozalisha kubanwa kwa sekta binafsi na kufujwa kwa pesa za umma</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/sw/common_voice_sw_29964552.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___sw/common_voice_sw_29964552.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___sw/common_voice_sw_29964552.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___sw/common_voice_sw_29964552.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___sw/common_voice_sw_29964552.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___sw/common_voice_sw_29964552.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___sw/common_voice_sw_29964552.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___sw/common_voice_sw_29964552.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___sw/common_voice_sw_29964552.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___sw/common_voice_sw_29964552.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___sw/common_voice_sw_29964552.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___sw/common_voice_sw_29964552.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___sw/common_voice_sw_29964552.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___sw/common_voice_sw_29964552.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___sw/common_voice_sw_29964552.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___sw/common_voice_sw_29964552.wav" controls=""></audio>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 class=""><a id="urdu">5. Urdu</a></h3>
+  <table border="1">
+    <tbody>
+      <tr>
+        <td rowspan="2">#</td>
+        <td rowspan="2">Text</td>
+        <td rowspan="2">Ground-truth</td>
+        <td colspan="3">English (en-US)</td>
+        <td colspan="3">Finnish (fi)</td>
+        <td colspan="3">Hindu (hi)</td>
+        <td colspan="3">Japanese (ja)</td>
+        <td colspan="3">Russian (ru)</td>
+      </tr>
+      <tr>
+        <td>Nomap</td>
+        <td>Map</td>
+        <td>Feature</td>
+        <td>Nomap</td>
+        <td>Map</td>
+        <td>Feature</td>
+        <td>Nomap</td>
+        <td>Map</td>
+        <td>Feature</td>
+        <td>Nomap</td>
+        <td>Map</td>
+        <td>Feature</td>
+        <td>Nomap</td>
+        <td>Map</td>
+        <td>Feature</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td class="transcript">آئندہ کا نقشہ محکمہ زراعت اورمنصفین کو مل بیٹھ کر بنانا چاہیے</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/ur/common_voice_ur_31822877.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___ur/common_voice_ur_31822877.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___ur/common_voice_ur_31822877.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___ur/common_voice_ur_31822877.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___ur/common_voice_ur_31822877.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___ur/common_voice_ur_31822877.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___ur/common_voice_ur_31822877.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___ur/common_voice_ur_31822877.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___ur/common_voice_ur_31822877.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___ur/common_voice_ur_31822877.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___ur/common_voice_ur_31822877.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___ur/common_voice_ur_31822877.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___ur/common_voice_ur_31822877.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___ur/common_voice_ur_31822877.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___ur/common_voice_ur_31822877.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___ur/common_voice_ur_31822877.wav" controls=""></audio>
+        </td>
+      </tr>
+      
+      <tr>
+        <td>2</td>
+        <td class="transcript">سال کے لیے پالتو خوراک حجم سطح کے برابر تھا کمپنی نے کہا</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/ur/common_voice_ur_31814621.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___ur/common_voice_ur_31814621.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___ur/common_voice_ur_31814621.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___ur/common_voice_ur_31814621.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___ur/common_voice_ur_31814621.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___ur/common_voice_ur_31814621.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___ur/common_voice_ur_31814621.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___ur/common_voice_ur_31814621.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___ur/common_voice_ur_31814621.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___ur/common_voice_ur_31814621.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___ur/common_voice_ur_31814621.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___ur/common_voice_ur_31814621.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___ur/common_voice_ur_31814621.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___ur/common_voice_ur_31814621.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___ur/common_voice_ur_31814621.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___ur/common_voice_ur_31814621.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>3</td>
+        <td class="transcript">پاکستانی ہیئر ای</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/ur/common_voice_ur_31814481.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___ur/common_voice_ur_31814481.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___ur/common_voice_ur_31814481.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___ur/common_voice_ur_31814481.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___ur/common_voice_ur_31814481.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___ur/common_voice_ur_31814481.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___ur/common_voice_ur_31814481.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___ur/common_voice_ur_31814481.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___ur/common_voice_ur_31814481.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___ur/common_voice_ur_31814481.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___ur/common_voice_ur_31814481.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___ur/common_voice_ur_31814481.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___ur/common_voice_ur_31814481.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___ur/common_voice_ur_31814481.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___ur/common_voice_ur_31814481.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___ur/common_voice_ur_31814481.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>4</td>
+        <td class="transcript">میرے جوتے پالش کروا دیجئے</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/ur/common_voice_ur_31814960.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___ur/common_voice_ur_31814960.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___ur/common_voice_ur_31814960.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___ur/common_voice_ur_31814960.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___ur/common_voice_ur_31814960.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___ur/common_voice_ur_31814960.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___ur/common_voice_ur_31814960.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___ur/common_voice_ur_31814960.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___ur/common_voice_ur_31814960.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___ur/common_voice_ur_31814960.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___ur/common_voice_ur_31814960.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___ur/common_voice_ur_31814960.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___ur/common_voice_ur_31814960.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___ur/common_voice_ur_31814960.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___ur/common_voice_ur_31814960.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___ur/common_voice_ur_31814960.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>5</td>
+        <td class="transcript">اب ہمیں نہ ملے تو ہماری کم علمی اور کم عقلی</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/ur/common_voice_ur_31813028.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___ur/common_voice_ur_31813028.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___ur/common_voice_ur_31813028.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___ur/common_voice_ur_31813028.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___ur/common_voice_ur_31813028.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___ur/common_voice_ur_31813028.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___ur/common_voice_ur_31813028.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___ur/common_voice_ur_31813028.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___ur/common_voice_ur_31813028.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___ur/common_voice_ur_31813028.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___ur/common_voice_ur_31813028.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___ur/common_voice_ur_31813028.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___ur/common_voice_ur_31813028.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___ur/common_voice_ur_31813028.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___ur/common_voice_ur_31813028.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___ur/common_voice_ur_31813028.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>6</td>
+        <td class="transcript">تو میں تب بھی خاموش رہا</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/ur/common_voice_ur_31823234.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___ur/common_voice_ur_31823234.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___ur/common_voice_ur_31823234.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___ur/common_voice_ur_31823234.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___ur/common_voice_ur_31823234.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___ur/common_voice_ur_31823234.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___ur/common_voice_ur_31823234.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___ur/common_voice_ur_31823234.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___ur/common_voice_ur_31823234.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___ur/common_voice_ur_31823234.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___ur/common_voice_ur_31823234.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___ur/common_voice_ur_31823234.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___ur/common_voice_ur_31823234.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___ur/common_voice_ur_31823234.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___ur/common_voice_ur_31823234.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___ur/common_voice_ur_31823234.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>7</td>
+        <td class="transcript">اسک ڈائیونگ تو بہر حال ایک خطر کھیل ہے</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/ur/common_voice_ur_31812994.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___ur/common_voice_ur_31812994.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___ur/common_voice_ur_31812994.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___ur/common_voice_ur_31812994.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___ur/common_voice_ur_31812994.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___ur/common_voice_ur_31812994.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___ur/common_voice_ur_31812994.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___ur/common_voice_ur_31812994.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___ur/common_voice_ur_31812994.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___ur/common_voice_ur_31812994.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___ur/common_voice_ur_31812994.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___ur/common_voice_ur_31812994.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___ur/common_voice_ur_31812994.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___ur/common_voice_ur_31812994.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___ur/common_voice_ur_31812994.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___ur/common_voice_ur_31812994.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>8</td>
+        <td class="transcript">مسلمان ممالک مل کر بھی شام کو خود سے سبق نہیں سکھا سکتے</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/ur/common_voice_ur_31814061.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___ur/common_voice_ur_31814061.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___ur/common_voice_ur_31814061.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___ur/common_voice_ur_31814061.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___ur/common_voice_ur_31814061.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___ur/common_voice_ur_31814061.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___ur/common_voice_ur_31814061.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___ur/common_voice_ur_31814061.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___ur/common_voice_ur_31814061.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___ur/common_voice_ur_31814061.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___ur/common_voice_ur_31814061.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___ur/common_voice_ur_31814061.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___ur/common_voice_ur_31814061.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___ur/common_voice_ur_31814061.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___ur/common_voice_ur_31814061.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___ur/common_voice_ur_31814061.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>9</td>
+        <td class="transcript">شجرکاری مہم تصاویر کو پسند کیا گیا</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/ur/common_voice_ur_31814646.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___ur/common_voice_ur_31814646.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___ur/common_voice_ur_31814646.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___ur/common_voice_ur_31814646.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___ur/common_voice_ur_31814646.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___ur/common_voice_ur_31814646.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___ur/common_voice_ur_31814646.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___ur/common_voice_ur_31814646.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___ur/common_voice_ur_31814646.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___ur/common_voice_ur_31814646.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___ur/common_voice_ur_31814646.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___ur/common_voice_ur_31814646.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___ur/common_voice_ur_31814646.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___ur/common_voice_ur_31814646.wav" controls=""></audio>
+        </td>
+        <td>1
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___ur/common_voice_ur_31814646.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>10</td>
+        <td class="transcript">اللہ ہی واپسی کا دروازہ رکھے</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/ur/common_voice_ur_31822821.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___ur/common_voice_ur_31822821.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___ur/common_voice_ur_31822821.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___ur/common_voice_ur_31822821.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___ur/common_voice_ur_31822821.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___ur/common_voice_ur_31822821.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___ur/common_voice_ur_31822821.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___ur/common_voice_ur_31822821.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___ur/common_voice_ur_31822821.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___ur/common_voice_ur_31822821.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___ur/common_voice_ur_31822821.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___ur/common_voice_ur_31822821.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___ur/common_voice_ur_31822821.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___ur/common_voice_ur_31822821.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___ur/common_voice_ur_31822821.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___ur/common_voice_ur_31822821.wav" controls=""></audio>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 class=""><a id="uzbek">6. Uzbek</a></h3>
+  <table border="1">
+    <tbody>
+      <tr>
+        <td rowspan="2">#</td>
+        <td rowspan="2">Text</td>
+        <td rowspan="2">Ground-truth</td>
+        <td colspan="3">English (en-US)</td>
+        <td colspan="3">Finnish (fi)</td>
+        <td colspan="3">Hindu (hi)</td>
+        <td colspan="3">Japanese (ja)</td>
+        <td colspan="3">Russian (ru)</td>
+      </tr>
+      <tr>
+        <td>Nomap</td>
+        <td>Map</td>
+        <td>Feature</td>
+        <td>Nomap</td>
+        <td>Map</td>
+        <td>Feature</td>
+        <td>Nomap</td>
+        <td>Map</td>
+        <td>Feature</td>
+        <td>Nomap</td>
+        <td>Map</td>
+        <td>Feature</td>
+        <td>Nomap</td>
+        <td>Map</td>
+        <td>Feature</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td class="transcript">jizzax viloyati xabarlari - qisqa satrlarda</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/uz/common_voice_uz_29980875.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___uz/common_voice_uz_29980875.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___uz/common_voice_uz_29980875.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___uz/common_voice_uz_29980875.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___uz/common_voice_uz_29980875.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___uz/common_voice_uz_29980875.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___uz/common_voice_uz_29980875.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___uz/common_voice_uz_29980875.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___uz/common_voice_uz_29980875.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___uz/common_voice_uz_29980875.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___uz/common_voice_uz_29980875.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___uz/common_voice_uz_29980875.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___uz/common_voice_uz_29980875.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___uz/common_voice_uz_29980875.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___uz/common_voice_uz_29980875.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___uz/common_voice_uz_29980875.wav" controls=""></audio>
+        </td>
+      </tr>
+      
+      <tr>
+        <td>2</td>
+        <td class="transcript">qo'rqoqlik qilmang.</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/uz/common_voice_uz_29475692.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___uz/common_voice_uz_29475692.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___uz/common_voice_uz_29475692.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___uz/common_voice_uz_29475692.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___uz/common_voice_uz_29475692.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___uz/common_voice_uz_29475692.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___uz/common_voice_uz_29475692.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___uz/common_voice_uz_29475692.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___uz/common_voice_uz_29475692.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___uz/common_voice_uz_29475692.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___uz/common_voice_uz_29475692.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___uz/common_voice_uz_29475692.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___uz/common_voice_uz_29475692.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___uz/common_voice_uz_29475692.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___uz/common_voice_uz_29475692.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___uz/common_voice_uz_29475692.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>3</td>
+        <td class="transcript">keyin menga yo'qol, deb eski botinkani otib yubordi</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/uz/common_voice_uz_30171174.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___uz/common_voice_uz_30171174.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___uz/common_voice_uz_30171174.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___uz/common_voice_uz_30171174.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___uz/common_voice_uz_30171174.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___uz/common_voice_uz_30171174.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___uz/common_voice_uz_30171174.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___uz/common_voice_uz_30171174.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___uz/common_voice_uz_30171174.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___uz/common_voice_uz_30171174.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___uz/common_voice_uz_30171174.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___uz/common_voice_uz_30171174.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___uz/common_voice_uz_30171174.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___uz/common_voice_uz_30171174.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___uz/common_voice_uz_30171174.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___uz/common_voice_uz_30171174.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>4</td>
+        <td class="transcript">asta-sekin men sening naqadar g'amgin va yakrang hayot kechirganingni anglab yetdim.</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/uz/common_voice_uz_30171127.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___uz/common_voice_uz_30171127.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___uz/common_voice_uz_30171127.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___uz/common_voice_uz_30171127.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___uz/common_voice_uz_30171127.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___uz/common_voice_uz_30171127.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___uz/common_voice_uz_30171127.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___uz/common_voice_uz_30171127.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___uz/common_voice_uz_30171127.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___uz/common_voice_uz_30171127.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___uz/common_voice_uz_30171127.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___uz/common_voice_uz_30171127.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___uz/common_voice_uz_30171127.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___uz/common_voice_uz_30171127.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___uz/common_voice_uz_30171127.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___uz/common_voice_uz_30171127.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>5</td>
+        <td class="transcript">hozir bu choralar tatbiq etilganidan biroz vaqt o'tib, orttirilgan tajribadan kelib chiqiladi.</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/uz/common_voice_uz_30174401.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___uz/common_voice_uz_30174401.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___uz/common_voice_uz_30174401.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___uz/common_voice_uz_30174401.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___uz/common_voice_uz_30174401.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___uz/common_voice_uz_30174401.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___uz/common_voice_uz_30174401.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___uz/common_voice_uz_30174401.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___uz/common_voice_uz_30174401.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___uz/common_voice_uz_30174401.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___uz/common_voice_uz_30174401.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___uz/common_voice_uz_30174401.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___uz/common_voice_uz_30174401.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___uz/common_voice_uz_30174401.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___uz/common_voice_uz_30174401.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___uz/common_voice_uz_30174401.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>6</td>
+        <td class="transcript">chag'ir toshli olis yo'llardan</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/uz/common_voice_uz_30177444.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___uz/common_voice_uz_30177444.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___uz/common_voice_uz_30177444.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___uz/common_voice_uz_30177444.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___uz/common_voice_uz_30177444.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___uz/common_voice_uz_30177444.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___uz/common_voice_uz_30177444.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___uz/common_voice_uz_30177444.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___uz/common_voice_uz_30177444.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___uz/common_voice_uz_30177444.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___uz/common_voice_uz_30177444.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___uz/common_voice_uz_30177444.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___uz/common_voice_uz_30177444.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___uz/common_voice_uz_30177444.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___uz/common_voice_uz_30177444.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___uz/common_voice_uz_30177444.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>7</td>
+        <td class="transcript">beshikka onasining qo'llari cho'zilgan</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/uz/common_voice_uz_29980965.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___uz/common_voice_uz_29980965.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___uz/common_voice_uz_29980965.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___uz/common_voice_uz_29980965.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___uz/common_voice_uz_29980965.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___uz/common_voice_uz_29980965.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___uz/common_voice_uz_29980965.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___uz/common_voice_uz_29980965.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___uz/common_voice_uz_29980965.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___uz/common_voice_uz_29980965.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___uz/common_voice_uz_29980965.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___uz/common_voice_uz_29980965.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___uz/common_voice_uz_29980965.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___uz/common_voice_uz_29980965.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___uz/common_voice_uz_29980965.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___uz/common_voice_uz_29980965.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>8</td>
+        <td class="transcript">menga aytib berishni xohlagan, biron gaping bormi?</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/uz/common_voice_uz_29872369.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___uz/common_voice_uz_29872369.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___uz/common_voice_uz_29872369.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___uz/common_voice_uz_29872369.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___uz/common_voice_uz_29872369.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___uz/common_voice_uz_29872369.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___uz/common_voice_uz_29872369.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___uz/common_voice_uz_29872369.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___uz/common_voice_uz_29872369.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___uz/common_voice_uz_29872369.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___uz/common_voice_uz_29872369.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___uz/common_voice_uz_29872369.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___uz/common_voice_uz_29872369.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___uz/common_voice_uz_29872369.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___uz/common_voice_uz_29872369.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___uz/common_voice_uz_29872369.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>9</td>
+        <td class="transcript">jar yoqasiga yaqin kelib qolgan uyda yashovchi oila avvalo nima qilishi kerak?</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/uz/common_voice_uz_29423349.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___uz/common_voice_uz_29423349.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___uz/common_voice_uz_29423349.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___uz/common_voice_uz_29423349.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___uz/common_voice_uz_29423349.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___uz/common_voice_uz_29423349.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___uz/common_voice_uz_29423349.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___uz/common_voice_uz_29423349.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___uz/common_voice_uz_29423349.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___uz/common_voice_uz_29423349.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___uz/common_voice_uz_29423349.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___uz/common_voice_uz_29423349.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___uz/common_voice_uz_29423349.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___uz/common_voice_uz_29423349.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___uz/common_voice_uz_29423349.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___uz/common_voice_uz_29423349.wav" controls=""></audio>
+        </td>
+      </tr>
+
+      <tr>
+        <td>10</td>
+        <td class="transcript">toshkent qamoqxonasi. usmon nosir.</td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/gt/uz/common_voice_uz_29875731.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/en___uz/common_voice_uz_29875731.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/en___uz/common_voice_uz_29875731.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/en___uz/common_voice_uz_29875731.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/fi___uz/common_voice_uz_29875731.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/fi___uz/common_voice_uz_29875731.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/fi___uz/common_voice_uz_29875731.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/hi___uz/common_voice_uz_29875731.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/hi___uz/common_voice_uz_29875731.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/hi___uz/common_voice_uz_29875731.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ja___uz/common_voice_uz_29875731.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ja___uz/common_voice_uz_29875731.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ja___uz/common_voice_uz_29875731.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_nomap/ru___uz/common_voice_uz_29875731.wav" controls=""></audio>
+        </td>
+        <td>
+          <audio src="../audio/transfer-SSW23/target/transfer_withmap/ru___uz/common_voice_uz_29875731.wav" controls=""></audio>
+        </td>
+<td>
+          <audio src="../audio/transfer-SSW23/target/transfer_feature/ru___uz/common_voice_uz_29875731.wav" controls=""></audio>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  
+
+</body>
+
+</html>
